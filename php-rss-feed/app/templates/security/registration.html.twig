@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
-{% block title %}Login{% endblock %}
+{% block title %}Registration{% endblock %}
+
 {% block stylesheets %}{{ encore_entry_link_tags('index') }}{% endblock %}
+{% block javascripts %}{{ encore_entry_script_tags('index') }}{% endblock %}
+
 {% block body %}
-    <div class="d-md-flex align-items-center h-md-100 p-5 justify-content-center">
-        <div class="border rounded p-5">
-            <h3 class="mb-4 text-center">Registration</h3>
-            {{ form_start(registrationForm) }}
-            {{ form_row(registrationForm.email) }}
-            {{ form_row(registrationForm.plainPassword) }}
-            <button class="btn btn-primary btn-block">Register</button>
-            {{ form_end(registrationForm) }}
-        </div>
+
+    <div id="vueApp">
+        <index></index>
     </div>
+    <script>
+        var twigData = JSON.parse('{{ data|raw }}')
+    </script>
 {% endblock %}

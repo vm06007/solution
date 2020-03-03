@@ -1,5 +1,4 @@
 <template>
-
     <div>
         <!--<b-navbar toggleable="lg" type="dark" variant="dark">-->
         <b-navbar toggleable="lg" class="navbar top-navbar col-lg-12 col-12 p-0">

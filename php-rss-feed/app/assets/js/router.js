@@ -2,6 +2,7 @@ import Router from 'vue-router'
 
 // components
 import home from '../component/vue/Home'
+import register from '../component/vue/Register'
 import notfound from '../component/vue/notFound'
 
 export default new Router({
@@ -11,6 +12,11 @@ export default new Router({
             path: '/',
             name: 'homepage',
             component: home
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: register
         },
         {
             path: '*',

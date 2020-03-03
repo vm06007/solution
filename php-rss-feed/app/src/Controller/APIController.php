@@ -4,12 +4,16 @@
 namespace App\Controller;
 
 
+use App\Entity\User;
+use App\Repository\UserRepository;
 use App\Service\ArticleService;
 use App\Service\RSSService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class APIController extends AbstractController
 {
@@ -34,4 +38,26 @@ class APIController extends AbstractController
 
     }
 
+    /**
+     * @Route("/email", name="check_email",methods={"POST"})
+     * @return JsonResponse
+     */
+    public function getEmail(Request $request,UserRepository $userRepository){
+
+        if (!empty($request->getContent())) {
+            $data = json_decode($request->getContent(), true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new HttpException(400, 'Invalid json >' . $request->getContent() . '>');
+            }
+        } else {
+            throw new HttpException(400, 'Empty request');
+        }
+
+        $email = $data['email'];
+
+        $user = $userRepository->findOneBy(['email'=>$email]);
+
+        return new JsonResponse(['exist'=>($user instanceof UserInterface),'email'=>$email,'status'=>true]);
+
+    }
 }

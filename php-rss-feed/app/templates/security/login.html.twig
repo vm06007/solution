@@ -35,7 +35,7 @@
                     <div class="col-xs-6 col-sm-6">
                         <div class="checkbox mb-3">
                             <label>
-                                <input type="checkbox" name="_remember_me"> Remember me
+                                <input type="checkbox" name="_remember_me" checked> Remember me
                             </label>
                         </div>
                     </div>
@@ -50,6 +50,12 @@
                     Sign in
                 </button>
             </form>
+
+            <a href="{{ path('app_register') }}">
+                <button class="btn w-100 btn-info" type="submit">
+                    Registration
+                </button>
+            </a>
 
         </div>
     </div>
