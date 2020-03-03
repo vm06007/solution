@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+{% block title %}Login{% endblock %}
+{% block stylesheets %}{{ encore_entry_link_tags('index') }}{% endblock %}
+{% block body %}
+    <div class="d-md-flex align-items-center h-md-100 p-5 justify-content-center">
+        <div class="border rounded p-5">
+            <h3 class="mb-4 text-center">Login</h3>
+            <form method="post" class="mb-2">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                                <span class="input-group-text"
+                                      id="basic-addon-audit-followers-min">Username</span>
+                    </div>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"
+                           placeholder="Email" required>
+                </div>
+                <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                                <span class="input-group-text"
+                                      id="basic-addon-audit-followers-min">Password</span>
+                    </div>
+                    <input type="password" name="password" id="inputPassword" class="form-control"
+                           placeholder="Password" required>
+                </div>
+
+                <input type="hidden" name="_csrf_token"
+                       value="{{ csrf_token('authenticate') }}"
+                >
+
+                <div class="row remember-row">
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="checkbox mb-3">
+                            <label>
+                                <input type="checkbox" name="_remember_me"> Remember me
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6">
+                        <p class="forgotPwd">
+                            <a class="lnk-toggler" data-panel=".panel-forgot" href="{{ path('forget') }}">Forgot password?</a>
+                        </p>
+                    </div>
+                </div> <!-- ./remember-row -->
+
+                <button class="btn w-100 btn-info" type="submit">
+                    Sign in
+                </button>
+            </form>
+
+        </div>
+    </div>
+{% endblock %}

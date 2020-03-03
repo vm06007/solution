@@ -1,0 +1,63 @@
+# docker-compose-test
+version: "3.6"
+services:
+
+  nginx:
+    image: "${IMAGE_NGINX}"
+    restart: always
+    volumes:
+      - ./app/:/var/www
+      - ./logs:/var/log/nginx
+      - ./docker/nginx:/etc/nginx/conf.d
+    ports:
+      - "${NGINX_SERVER_PORT:-8080}:80"
+    depends_on:
+      - app
+
+  app:
+    build: ./docker/php
+    links:
+      - mysql
+    environment:
+      APP_ENV: "${APP_ENV}"
+      APP_SECRET: "${APP_ENV}"
+
+      RSS_SOURCE: "${RSS_SOURCE}"
+
+      DATABASE_URL: "mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@mysql:3306/${MYSQL_DATABASE}"
+      MAILER_URL: "${MAILER_URL}"
+
+      APP_DOMAIN: "${APP_DOMAIN}"
+      SENDER_EMAIL: "${SENDER_EMAIL}"
+      ADMIN_EMAIL: "${ADMIN_EMAIL}"
+
+      FLUENT_HOST: "${FLUENT_HOST}"
+      FLUENT_APP_NAME: "${FLUENT_APP_NAME}"
+      FLUENT_APP_REMOTE_HOST: "${FLUENT_APP_REMOTE_HOST}"
+      FLUENT_APP_REMOTE_PORT: "${FLUENT_APP_REMOTE_PORT}"
+    volumes:
+      - ./app:/var/www
+
+  mysql:
+    image: "${IMAGE_MYSQL}"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - '${MYSQL_SERVER_PORT:-3306}:3306'
+
+  phpmyadmin:
+    image: "${IMAGE_PHPADMIN}"
+    links:
+      - mysql
+    depends_on:
+      - mysql
+    ports:
+      - '${PHPADMIN_SERVER_PORT:-8099}:80'
+    environment:
+      - PMA_ARBITRARY=1
+      - PHP_UPLOAD_MAX_FILESIZE=100MB
